@@ -16,13 +16,16 @@ st.markdown(
                 font-size: 1.5rem !important;
             }
         }
+        .css-1d391kg {
+            padding: 1rem !important;
+        }
     </style>
     """, unsafe_allow_html=True
 )
 
-st.title("⚽ Scout IA - Scout de Futebol Automatizado")
+st.title("⚽ Scout IA - Análise Inteligente de Partidas Amadoras")
 
-st.subheader("📋 Inserir dados da partida")
+st.markdown("Preencha os dados da partida para gerar estatísticas, gráficos e um relatório completo em PDF.")
 
 with st.expander("➕ Adicionar jogadores"):
     num_jogadores = st.number_input("Quantos jogadores deseja registrar?", min_value=1, max_value=20, value=5)
@@ -52,10 +55,10 @@ with st.expander("➕ Adicionar jogadores"):
 
 if st.button("📊 Gerar Scout"):
     df = pd.DataFrame(dados)
-    df["Eficiência de Passe (%)"] = df["Passes Certos"] / (df["Passes Certos"] + df["Passes Errados"]) * 100
+    df["Eficiência de Passe (%)"] = round(df["Passes Certos"] / (df["Passes Certos"] + df["Passes Errados"]) * 100, 1)
     df["Impacto Ofensivo"] = df["Gols"] * 2 + df["Finalizações"]
 
-    st.subheader("📈 Resultados")
+    st.subheader("📈 Resultados da Partida")
     st.dataframe(df.sort_values(by="Impacto Ofensivo", ascending=False), use_container_width=True)
 
     fig = px.bar(df, x="Nome", y="Impacto Ofensivo", title="Impacto Ofensivo por Jogador", text="Impacto Ofensivo")
